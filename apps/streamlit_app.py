@@ -32,14 +32,30 @@ def load_streamlit_secrets_for_gee() -> None:
     if project and not os.getenv("EARTHENGINE_PROJECT"):
         os.environ["EARTHENGINE_PROJECT"] = str(project)
 
-    try:
-        service_account_json = st.secrets.get("GEE_SERVICE_ACCOUNT_JSON")
-    except Exception:
-        service_account_json = None
+    if os.getenv("GEE_SERVICE_ACCOUNT_KEY"):
+        return
 
-    if service_account_json and not os.getenv("GEE_SERVICE_ACCOUNT_KEY"):
+    service_account: dict | None = None
+    try:
+        if "gee_service_account" in st.secrets:
+            service_account = dict(st.secrets["gee_service_account"])
+    except Exception:
+        service_account = None
+
+    if service_account is None:
+        try:
+            service_account_json = st.secrets.get("GEE_SERVICE_ACCOUNT_JSON")
+        except Exception:
+            service_account_json = None
+        if service_account_json:
+            service_account = json.loads(str(service_account_json))
+
+    if service_account:
+        private_key = service_account.get("private_key")
+        if isinstance(private_key, str):
+            service_account["private_key"] = private_key.replace("\\n", "\n")
         key_path = Path(tempfile.gettempdir()) / "gee_service_account.json"
-        key_path.write_text(str(service_account_json), encoding="utf-8")
+        key_path.write_text(json.dumps(service_account), encoding="utf-8")
         os.environ["GEE_SERVICE_ACCOUNT_KEY"] = str(key_path)
 
 
