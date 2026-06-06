@@ -380,10 +380,54 @@ python scripts/25_run_agent_query.py --query "Serpong (-6.3194, 106.6641) vs Bek
 
 ## Minggu 3 - Streamlit UI MVP
 
-Install library UI saja jika belum ada:
+### FastAPI backend
+
+File API untuk submission:
+
+```text
+apps/fastapi_app.py
+```
+
+Jalankan dari root project:
 
 ```powershell
-pip install streamlit
+cd "E:\AI ML\GeoAI_Flood_Susceptibility"
+uvicorn apps.fastapi_app:app --reload --host 127.0.0.1 --port 8000
+```
+
+Local API links:
+
+```text
+API health: http://127.0.0.1:8000/health
+API docs  : http://127.0.0.1:8000/docs
+Endpoint  : POST http://127.0.0.1:8000/analyze
+```
+
+Contoh request body untuk `/analyze`:
+
+```json
+{
+  "query": "Gudang logistik kami di Bekasi koordinat -6.23, 107.01 apakah layak dijadikan collateral kredit?",
+  "mode": "auto",
+  "provider": "groq",
+  "dry_run": false
+}
+```
+
+Jika hanya ingin mengecek FSI dan RAG tanpa LLM, set `dry_run` menjadi `true`.
+
+### Streamlit frontend
+
+File UI untuk submission:
+
+```text
+apps/streamlit_app.py
+```
+
+Install library UI/API saja jika belum ada:
+
+```powershell
+pip install streamlit fastapi uvicorn[standard]
 ```
 
 Jalankan UI:
@@ -455,4 +499,3 @@ outputs/rag_generated_answers.json
 outputs/rag_generated_answers_validation.json
 outputs/ragas_report.json
 ```
-
