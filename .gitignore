@@ -52,6 +52,21 @@ docs/*.docx
 docs/*.pdf
 docs/regulatory/
 
+# Deployment artifacts required by Streamlit live mode
+!data/
+!data/gis/
+!data/raw/
+!outputs/
+!outputs/checkpoints_exp2/
+
+!data/gis/elevation_srtm_30m.tif
+!data/gis/slope_srtm_30m.tif
+!data/gis/chirps_mean_annual_1990_2023.tif
+!data/gis/river_distance_30m.tif
+!data/raw/worldpop_population_density_jabodetabek.tif
+!outputs/dataset_stats.json
+!outputs/checkpoints_exp2/unet_effb0_jabodetabek_exp2_best_model.pth
+
 # OS/editor files
 .DS_Store
 Thumbs.db
