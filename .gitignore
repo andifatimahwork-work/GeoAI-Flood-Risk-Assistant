@@ -54,10 +54,15 @@ docs/regulatory/
 
 # Deployment artifacts required by Streamlit live mode
 !data/
+data/*
 !data/gis/
+data/gis/*
 !data/raw/
+data/raw/*
 !outputs/
+outputs/*
 !outputs/checkpoints_exp2/
+outputs/checkpoints_exp2/*
 
 !data/gis/elevation_srtm_30m.tif
 !data/gis/slope_srtm_30m.tif
