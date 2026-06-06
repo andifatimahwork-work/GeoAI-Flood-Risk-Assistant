@@ -1,0 +1,46 @@
+{
+  "docs_dir": "docs/regulatory",
+  "persist_directory": "chroma_db",
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "chunk_size": 900,
+  "chunk_overlap": 150,
+  "retriever": {
+    "search_type": "mmr",
+    "k": 5,
+    "fetch_k": 20,
+    "lambda_mult": 0.7,
+    "enable_query_routing": true
+  },
+  "documents": {
+    "BNPB_Risiko_Bencana_Indonesia_2024.pdf": {
+      "language": "id",
+      "doc_type": "risk_report",
+      "relevance": "disaster_risk"
+    },
+    "GRI_201_Economic_Impacts.pdf": {
+      "language": "id",
+      "doc_type": "standard",
+      "relevance": "economic_impacts"
+    },
+    "IPCC_AR6_Chapter_10_Asia.pdf": {
+      "language": "en",
+      "doc_type": "climate_science",
+      "relevance": "asia_climate_risk"
+    },
+    "OJK_POJK_No.51_2017.pdf": {
+      "language": "id",
+      "doc_type": "regulation",
+      "relevance": "sustainable_finance"
+    },
+    "OJK_Taksonomi_Hijau_Indonesia.pdf": {
+      "language": "id",
+      "doc_type": "taxonomy",
+      "relevance": "green_taxonomy"
+    },
+    "TCFD_Recommendations_Report.pdf": {
+      "language": "en",
+      "doc_type": "framework",
+      "relevance": "climate_disclosure"
+    }
+  }
+}

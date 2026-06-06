@@ -1,0 +1,59 @@
+# Python / environment
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*service_account*.json
+gee_service_account*.json
+credentials*.json
+token*.json
+
+# Notebook/cache artifacts
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# Local app/cache/vector DB
+cache/
+chroma_db/
+.streamlit/secrets.toml
+
+# Data products and generated geospatial artifacts
+data/raw/
+data/gis/
+data/gee_exports/
+data/worldpop/
+outputs/
+
+# Large model / raster / array files
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.tif
+*.tiff
+*.npy
+*.npz
+*.vrt
+*.aux.xml
+
+# Generated reports and non-code documents
+docs/*.docx
+docs/*.pdf
+docs/regulatory/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/

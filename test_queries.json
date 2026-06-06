@@ -1,0 +1,162 @@
+[
+  {
+    "id": "banking_01",
+    "segment": "Perbankan",
+    "question": "Apa kewajiban utama lembaga jasa keuangan menurut POJK 51/2017 dalam penerapan keuangan berkelanjutan?",
+    "ground_truth_answer": "Lembaga jasa keuangan perlu menerapkan prinsip keuangan berkelanjutan, menyusun Rencana Aksi Keuangan Berkelanjutan, dan menyampaikan laporan keberlanjutan sesuai ketentuan POJK 51/2017.",
+    "relevant_doc_source": ["OJK_POJK_No.51_2017.pdf"],
+    "query_type": "id_to_id_specific_regulation"
+  },
+  {
+    "id": "banking_02",
+    "segment": "Perbankan",
+    "question": "Bagaimana bank dapat menghubungkan hasil flood susceptibility score dengan pengungkapan risiko fisik iklim menurut TCFD?",
+    "ground_truth_answer": "Bank dapat menggunakan flood susceptibility score sebagai bagian dari pengukuran exposure terhadap physical climate risk, lalu mengaitkannya dengan strategi, manajemen risiko, metrik, target, dan analisis skenario sebagaimana direkomendasikan TCFD.",
+    "relevant_doc_source": ["TCFD_Recommendations_Report.pdf"],
+    "query_type": "id_to_en_climate_disclosure"
+  },
+  {
+    "id": "banking_03",
+    "segment": "Perbankan",
+    "question": "Untuk portofolio kredit properti, bagaimana POJK 51 dan TCFD sama-sama mendukung kebutuhan penilaian risiko banjir?",
+    "ground_truth_answer": "POJK 51 mendukung integrasi prinsip keuangan berkelanjutan dan pelaporan keberlanjutan, sedangkan TCFD menekankan pengungkapan risiko iklim termasuk risiko fisik. Keduanya dapat menjadi dasar bagi bank untuk menilai exposure portofolio kredit terhadap risiko banjir.",
+    "relevant_doc_source": ["OJK_POJK_No.51_2017.pdf", "TCFD_Recommendations_Report.pdf"],
+    "query_type": "cross_document"
+  },
+  {
+    "id": "banking_04",
+    "segment": "Perbankan",
+    "question": "Apa manfaat Taksonomi Hijau Indonesia bagi bank dalam klasifikasi pembiayaan aktivitas berkelanjutan?",
+    "ground_truth_answer": "Taksonomi Hijau membantu bank mengklasifikasikan aktivitas hijau, mengurangi risiko greenwashing, mendukung pelaporan, monitoring, dan manajemen risiko dalam pembiayaan atau investasi berkelanjutan.",
+    "relevant_doc_source": ["OJK_Taksonomi_Hijau_Indonesia.pdf"],
+    "query_type": "id_to_id_taxonomy"
+  },
+  {
+    "id": "banking_05",
+    "segment": "Perbankan",
+    "question": "Bagaimana GRI 201-2 relevan untuk menjelaskan dampak finansial dari risiko perubahan iklim seperti banjir?",
+    "ground_truth_answer": "GRI 201-2 relevan karena membahas implikasi finansial, risiko, dan peluang akibat perubahan iklim. Risiko banjir dapat dijelaskan sebagai risiko fisik yang berpotensi memengaruhi biaya, aset, operasional, atau pendapatan organisasi.",
+    "relevant_doc_source": ["GRI_201_Economic_Impacts.pdf"],
+    "query_type": "id_to_id_standard"
+  },
+  {
+    "id": "esg_01",
+    "segment": "Korporasi ESG",
+    "question": "How should a company disclose physical climate risks under the TCFD framework?",
+    "ground_truth_answer": "A company should disclose physical climate risks through governance, strategy, risk management, and metrics and targets. It should explain material exposures, potential financial impacts, and how scenario analysis informs planning.",
+    "relevant_doc_source": ["TCFD_Recommendations_Report.pdf"],
+    "query_type": "en_to_en_framework"
+  },
+  {
+    "id": "esg_02",
+    "segment": "Korporasi ESG",
+    "question": "Apa hubungan antara risiko banjir, dampak ekonomi, dan pelaporan GRI 201?",
+    "ground_truth_answer": "Risiko banjir dapat menjadi risiko perubahan iklim yang berdampak pada kinerja ekonomi, biaya operasional, kerusakan aset, gangguan rantai pasok, atau pendapatan. GRI 201 membantu mengungkap implikasi finansial dari risiko tersebut.",
+    "relevant_doc_source": ["GRI_201_Economic_Impacts.pdf"],
+    "query_type": "id_to_id_standard"
+  },
+  {
+    "id": "esg_03",
+    "segment": "Korporasi ESG",
+    "question": "Menurut IPCC AR6 Asia, mengapa risiko banjir dan curah hujan ekstrem penting bagi strategi adaptasi perusahaan di Asia?",
+    "ground_truth_answer": "IPCC AR6 Asia menjelaskan bahwa curah hujan ekstrem, banjir, siklon tropis, dan bahaya terkait iklim berdampak pada masyarakat dan infrastruktur di Asia. Karena itu perusahaan perlu mempertimbangkan adaptasi, pengelolaan risiko, dan ketahanan aset.",
+    "relevant_doc_source": ["IPCC_AR6_Chapter_10_Asia.pdf"],
+    "query_type": "id_to_en_climate_science"
+  },
+  {
+    "id": "esg_04",
+    "segment": "Korporasi ESG",
+    "question": "Bagaimana perusahaan dapat menggabungkan TCFD dan GRI 201 untuk menjelaskan risiko banjir secara finansial?",
+    "ground_truth_answer": "TCFD memberikan struktur pengungkapan risiko iklim melalui governance, strategy, risk management, dan metrics and targets, sedangkan GRI 201 membantu menjelaskan implikasi ekonomi. Keduanya dapat digunakan untuk menghubungkan hazard banjir dengan dampak finansial.",
+    "relevant_doc_source": ["TCFD_Recommendations_Report.pdf", "GRI_201_Economic_Impacts.pdf"],
+    "query_type": "cross_document"
+  },
+  {
+    "id": "esg_05",
+    "segment": "Korporasi ESG",
+    "question": "Apa risiko greenwashing yang ingin dikurangi oleh Taksonomi Hijau Indonesia?",
+    "ground_truth_answer": "Taksonomi Hijau Indonesia membantu mengurangi greenwashing dengan menyediakan klasifikasi aktivitas hijau yang lebih jelas sehingga klaim pembiayaan atau investasi berkelanjutan dapat dibandingkan dengan kriteria yang lebih terstruktur.",
+    "relevant_doc_source": ["OJK_Taksonomi_Hijau_Indonesia.pdf"],
+    "query_type": "id_to_id_taxonomy"
+  },
+  {
+    "id": "developer_01",
+    "segment": "Developer",
+    "question": "Bagaimana developer properti dapat menggunakan flood susceptibility score untuk due diligence lokasi proyek?",
+    "ground_truth_answer": "Developer dapat memakai flood susceptibility score sebagai screening awal untuk menilai exposure lokasi terhadap risiko banjir, lalu menghubungkannya dengan informasi hazard, exposure, kerentanan, dan rencana mitigasi sebelum keputusan investasi.",
+    "relevant_doc_source": ["BNPB_Risiko_Bencana_Indonesia_2024.pdf", "IPCC_AR6_Chapter_10_Asia.pdf"],
+    "query_type": "cross_document"
+  },
+  {
+    "id": "developer_02",
+    "segment": "Developer",
+    "question": "Menurut BNPB, bagaimana konsep risiko bencana berbeda dari sekadar kerawanan bencana?",
+    "ground_truth_answer": "BNPB menjelaskan pergeseran dari kerawanan menuju risiko sebagai penilaian yang tidak hanya melihat bahaya, tetapi juga dampak yang mungkin terjadi. Risiko bencana berkaitan dengan potensi kerugian dan menjadi dasar pengelolaan risiko bencana.",
+    "relevant_doc_source": ["BNPB_Risiko_Bencana_Indonesia_2024.pdf"],
+    "query_type": "id_to_id_risk_report"
+  },
+  {
+    "id": "developer_03",
+    "segment": "Developer",
+    "question": "Mengapa lokasi dengan risiko banjir tinggi perlu dipertimbangkan dalam pembiayaan proyek hijau atau berkelanjutan?",
+    "ground_truth_answer": "Risiko banjir tinggi dapat memengaruhi kelayakan, ketahanan, dan dampak lingkungan suatu proyek. Taksonomi Hijau mendukung klasifikasi dan monitoring aktivitas berkelanjutan, sementara risiko fisik perlu dipertimbangkan agar pembiayaan tidak mengabaikan kerentanan lokasi.",
+    "relevant_doc_source": ["OJK_Taksonomi_Hijau_Indonesia.pdf", "TCFD_Recommendations_Report.pdf"],
+    "query_type": "cross_document"
+  },
+  {
+    "id": "developer_04",
+    "segment": "Developer",
+    "question": "What does TCFD suggest about using scenario analysis for assets exposed to physical climate risk?",
+    "ground_truth_answer": "TCFD suggests that organizations exposed to climate-related risks should consider scenario analysis to inform strategic and financial planning, including for assets affected by physical climate threats over relevant time horizons.",
+    "relevant_doc_source": ["TCFD_Recommendations_Report.pdf"],
+    "query_type": "en_to_en_framework"
+  },
+  {
+    "id": "developer_05",
+    "segment": "Developer",
+    "question": "Bagaimana informasi IPCC tentang banjir di Asia dapat mendukung desain adaptasi kawasan hunian?",
+    "ground_truth_answer": "Informasi IPCC tentang peningkatan bahaya hidrometeorologi, curah hujan ekstrem, dan banjir di Asia dapat digunakan untuk memperkuat desain adaptasi kawasan hunian, termasuk drainase, perlindungan aset, dan perencanaan lokasi.",
+    "relevant_doc_source": ["IPCC_AR6_Chapter_10_Asia.pdf"],
+    "query_type": "id_to_en_climate_science"
+  },
+  {
+    "id": "gov_01",
+    "segment": "Pemerintah Daerah",
+    "question": "Bagaimana dokumen BNPB menjelaskan pentingnya kajian risiko bencana untuk penanggulangan bencana daerah?",
+    "ground_truth_answer": "BNPB menjelaskan bahwa kajian risiko bencana membantu memahami risiko yang ada dan menjadi dasar bagi perumusan upaya penanggulangan bencana, pengurangan kerugian, dan pengelolaan risiko.",
+    "relevant_doc_source": ["BNPB_Risiko_Bencana_Indonesia_2024.pdf"],
+    "query_type": "id_to_id_risk_report"
+  },
+  {
+    "id": "gov_02",
+    "segment": "Pemerintah Daerah",
+    "question": "Menurut IPCC AR6 Asia, apa hubungan antara extreme precipitation dan flooding di kawasan Asia?",
+    "ground_truth_answer": "IPCC AR6 Asia menjelaskan bahwa kejadian curah hujan ekstrem dan banjir sering terjadi di wilayah monsun Asia, dan bahaya terkait cuaca berdampak pada masyarakat, infrastruktur, serta kebutuhan adaptasi.",
+    "relevant_doc_source": ["IPCC_AR6_Chapter_10_Asia.pdf"],
+    "query_type": "id_to_en_climate_science"
+  },
+  {
+    "id": "gov_03",
+    "segment": "Pemerintah Daerah",
+    "question": "Bagaimana pemerintah daerah dapat memakai peta FSI bersama kerangka BNPB untuk prioritas mitigasi banjir?",
+    "ground_truth_answer": "Pemerintah daerah dapat memakai peta FSI sebagai screening spasial area rawan, lalu mengaitkannya dengan pendekatan BNPB tentang kajian risiko bencana untuk menetapkan prioritas mitigasi, perencanaan, dan pengurangan potensi kerugian.",
+    "relevant_doc_source": ["BNPB_Risiko_Bencana_Indonesia_2024.pdf"],
+    "query_type": "id_to_id_risk_report"
+  },
+  {
+    "id": "gov_04",
+    "segment": "Pemerintah Daerah",
+    "question": "Bagaimana konsep hazard, exposure, dan vulnerability dari literatur iklim dapat membantu interpretasi risiko banjir daerah?",
+    "ground_truth_answer": "Risiko banjir dapat dipahami sebagai kombinasi bahaya iklim, exposure aset atau penduduk, dan kerentanan. Pendekatan ini membantu pemerintah daerah tidak hanya melihat lokasi banjir, tetapi juga siapa dan aset apa yang terdampak.",
+    "relevant_doc_source": ["IPCC_AR6_Chapter_10_Asia.pdf", "BNPB_Risiko_Bencana_Indonesia_2024.pdf"],
+    "query_type": "cross_document"
+  },
+  {
+    "id": "gov_05",
+    "segment": "Pemerintah Daerah",
+    "question": "Apa manfaat menghubungkan hasil FSI dengan dokumen regulasi dan standar pelaporan untuk kebijakan daerah?",
+    "ground_truth_answer": "Menghubungkan FSI dengan dokumen regulasi dan standar pelaporan membantu menerjemahkan hasil teknis menjadi dasar kebijakan, prioritas mitigasi, komunikasi risiko, serta pelaporan risiko iklim yang lebih mudah dipahami pemangku kepentingan.",
+    "relevant_doc_source": ["BNPB_Risiko_Bencana_Indonesia_2024.pdf", "TCFD_Recommendations_Report.pdf", "OJK_POJK_No.51_2017.pdf"],
+    "query_type": "cross_document"
+  }
+]

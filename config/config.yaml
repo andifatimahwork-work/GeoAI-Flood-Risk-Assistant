@@ -1,0 +1,180 @@
+project:
+  name: geoai_flood_susceptibility
+  version: jabodetabek_exp2_drop_informal_worldpop
+  seed: 42
+
+drive:
+  folder: GeoAI_Flood_Susceptibility_Minggu1
+  colab_project_dir: /content/drive/MyDrive/GeoAI_Flood_Susceptibility
+
+aoi:
+  name: jabodetabek
+  # lon_min, lat_min, lon_max, lat_max
+  bbox: [106.35, -6.90, 107.25, -5.85]
+  crs: EPSG:4326
+
+gee:
+  # Isi dengan Google Cloud project ID yang sudah mengaktifkan Earth Engine.
+  project_id: null
+  start_date: "2023-06-01"
+  end_date: "2023-09-30"
+  sentinel_collection: COPERNICUS/S2_SR_HARMONIZED
+  esa_worldcover_asset: ESA/WorldCover/v200
+  jrc_gsw_asset: JRC/GSW1_4/GlobalSurfaceWater
+  worldpop_asset: WorldPop/GP/100m/pop
+  worldpop_year: 2020
+  worldpop_country: IDN
+  srtm_asset: USGS/SRTMGL1_003
+  chirps_daily_asset: UCSB-CHG/CHIRPS/DAILY
+  chirps_start_year: 1990
+  chirps_end_year: 2023
+  cloud:
+    max_scene_cloud_percent: 20
+    scl_excluded_classes: [3, 8, 9, 10, 11]
+    method: SCL_mask_for_S2_SR_HARMONIZED
+  bands: [B2, B3, B4, B8]
+  export:
+    s2_scale_m: 10
+    label_scale_m: 10
+    gsw_scale_m: 30
+    file_dimensions: 256
+    max_pixels: 10000000000000
+
+paths:
+  raw_dir: data/raw
+  processed_dir: outputs/tiles
+  output_dir: outputs
+  s2_tif: data/raw/s2_composite_jabodetabek.tif
+  esa_tif: data/raw/esa_worldcover_jabodetabek.tif
+  jrc_gsw_tif: data/raw/jrc_gsw_occurrence_jabodetabek.tif
+  worldpop_tif: data/raw/worldpop_population_density_jabodetabek.tif
+  informal_mask: null
+  remap_config: config/remap_config.json
+  dataset_stats: outputs/dataset_stats.json
+  train_list: outputs/tiles/train_list.txt
+  val_list: outputs/tiles/val_list.txt
+  train_list_clean: outputs/tiles/train_list_clean.txt
+  val_list_clean: outputs/tiles/val_list_clean.txt
+  eda_dir: outputs/eda
+  class_weights: outputs/eda/class_weights.json
+  ablation_locations: data/samples/ablation_locations.csv
+
+eda:
+  max_bad_pixel_fraction: 0.30
+  drop_single_class_tiles: true
+  max_single_class_fraction: 0.95
+  resplit_strategy: dominant_class_stratified
+  band_histogram_tiles: 50
+  sample_visual_tiles: 12
+  scatter_max_pixels: 60000
+
+preprocessing:
+  tile_size: 256
+  stride: 256
+  min_valid_fraction: 0.80
+  train_fraction: 0.80
+  ignore_index: 255
+  image_dtype: float32
+  save_geotiff_tiles: false
+
+classes:
+  names:
+    - Impervious
+    - Vegetasi
+    - Sawah
+    - Air
+    - Lahan_Terbuka
+  num_classes: 5
+
+training:
+  encoder: efficientnet-b0
+  encoder_weights: imagenet
+  in_channels: 4
+  batch_size: 8
+  num_workers: 2
+  warmup_epochs: 10
+  finetune_epochs: 50
+  warmup_lr: 0.001
+  finetune_lr: 0.00001
+  weight_decay: 0.0001
+  early_stopping_monitor: val_miou
+  early_stopping_patience: 15
+  early_stopping_min_delta: 0.001
+  loss:
+    dice_weight: 0.5
+    ce_weight: 0.5
+    ce_type: focal
+    focal_gamma: 2.0
+    exclude_zero_pixel_classes: true
+  sampler:
+    enabled: true
+    target_classes: [Lahan_Terbuka]
+    min_target_fraction: 0.01
+    target_multiplier: 3.0
+  checkpoint_dir: outputs/checkpoints_exp2
+  best_model_name: unet_effb0_jabodetabek_exp2_best_model.pth
+  log_csv: outputs/training_log_exp2.csv
+  augment:
+    hflip: true
+    vflip: true
+    rot90: true
+    color_jitter_rgb:
+      brightness: 0.20
+      contrast: 0.20
+
+evaluation:
+  output_dir: outputs/evaluation_exp2
+  representative_png_count: 5
+  prediction_mosaic_tif: outputs/evaluation_exp2/lulc_unet_prediction.tif
+
+inference:
+  lulc_center_window_size: 5
+
+fsi:
+  reference_tif: data/raw/jrc_gsw_occurrence_jabodetabek.tif
+  elevation_tif: data/gis/elevation_srtm_30m.tif
+  slope_tif: data/gis/slope_srtm_30m.tif
+  rainfall_tif: data/gis/chirps_mean_annual_1990_2023.tif
+  river_distance_tif: data/gis/river_distance_30m.tif
+  population_tif: data/raw/worldpop_population_density_jabodetabek.tif
+  lulc_unet_tif: outputs/evaluation_exp2/lulc_unet_prediction.tif
+  lulc_esa_tif: data/raw/esa_worldcover_jabodetabek.tif
+  output_fsi_tif: outputs/fsi_exp2/fsi_map.tif
+  output_baseline_fsi_tif: outputs/fsi_exp2/fsi_baseline_esa.tif
+  output_ci_low_tif: outputs/fsi_exp2/fsi_ci_low.tif
+  output_ci_high_tif: outputs/fsi_exp2/fsi_ci_high.tif
+  output_components_dir: outputs/fsi_exp2/components
+  mask_lulc_classes: [Air]
+  elevation_transform: log_inverse
+  monte_carlo_iterations: 1000
+  monte_carlo_row_chunk_size: 16
+  perturbation_fraction: 0.10
+  weights:
+    elevation: 0.28
+    slope: 0.23
+    rainfall: 0.18
+    river_distance: 0.13
+    lulc: 0.10
+    population: 0.08
+  lulc_risk_scores:
+    Impervious: 0.85
+    Vegetasi: 0.25
+    Sawah: 0.60
+    Air: 1.00
+    Lahan_Terbuka: 0.65
+  categories:
+    low_max: 0.65
+    medium_high_max: 0.73
+    high_max: 0.76
+
+river_distance:
+  osm_tags:
+    waterway: true
+  max_distance_m: 10000
+
+validation:
+  output_dir: outputs/validation_exp2
+  fsi_tif: outputs/fsi_exp2/fsi_map.tif
+  jrc_gsw_tif: data/raw/jrc_gsw_occurrence_jabodetabek.tif
+  fsi_threshold: 0.65
+  jrc_occurrence_threshold: 10.0

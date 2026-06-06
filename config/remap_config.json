@@ -1,0 +1,24 @@
+{
+  "description": "Remap ESA WorldCover classes to 5 custom LULC classes for U-Net experiment 2. Informal is dropped because ESA WorldCover has no explicit informal settlement class; dense settlement risk is represented later by WorldPop in FSI.",
+  "ignore_index": 255,
+  "classes": {
+    "0": "Impervious",
+    "1": "Vegetasi",
+    "2": "Sawah",
+    "3": "Air",
+    "4": "Lahan_Terbuka"
+  },
+  "esa_to_custom": {
+    "10": 1,
+    "20": 1,
+    "30": 1,
+    "40": 2,
+    "50": 0,
+    "60": 4,
+    "70": 255,
+    "80": 3,
+    "90": 1,
+    "95": 1,
+    "100": 4
+  }
+}
