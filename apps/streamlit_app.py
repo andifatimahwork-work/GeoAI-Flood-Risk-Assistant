@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import tempfile
 from html import escape
 from pathlib import Path
 
@@ -15,12 +16,34 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from geoai_flood.query_pipeline import extract_coordinates, run_query_pipeline
 from geoai_flood.env import load_project_env
 from geoai_flood.geoai_tools import gee_live_status
+from geoai_flood.query_pipeline import extract_coordinates, run_query_pipeline
 
 ENV_PATH = load_project_env()
 
+
+def load_streamlit_secrets_for_gee() -> None:
+    try:
+        project = st.secrets.get("EARTHENGINE_PROJECT")
+    except Exception:
+        return
+
+    if project and not os.getenv("EARTHENGINE_PROJECT"):
+        os.environ["EARTHENGINE_PROJECT"] = str(project)
+
+    try:
+        service_account_json = st.secrets.get("GEE_SERVICE_ACCOUNT_JSON")
+    except Exception:
+        service_account_json = None
+
+    if service_account_json and not os.getenv("GEE_SERVICE_ACCOUNT_KEY"):
+        key_path = Path(tempfile.gettempdir()) / "gee_service_account.json"
+        key_path.write_text(str(service_account_json), encoding="utf-8")
+        os.environ["GEE_SERVICE_ACCOUNT_KEY"] = str(key_path)
+
+
+load_streamlit_secrets_for_gee()
 
 EXAMPLES = {
     "Perbankan - collateral": "Gudang logistik kami di Bekasi koordinat -6.23, 107.01 apakah layak dijadikan collateral kredit?",
@@ -64,7 +87,9 @@ def results_table(flood_results: list[dict]) -> pd.DataFrame:
     rows = []
     for item in flood_results:
         top = item.get("top_dominant_factors") or []
-        top_text = ", ".join(f"{factor_label(x['factor'])} ({x['weighted_contribution']})" for x in top)
+        top_text = ", ".join(
+            f"{factor_label(x['factor'])} ({x['weighted_contribution']})" for x in top
+        )
         rows.append(
             {
                 "Lokasi": item.get("name"),
@@ -205,9 +230,9 @@ def render_kpi_card(item: dict) -> None:
         f'<div class="kpi-score">{escape(str(item.get("fsi_score")))}</div>'
         f'<span class="risk-pill">{escape(category)} Risk</span>'
         '<div class="kpi-meta">'
-        f'<strong>CI:</strong> {escape(str(item.get("ci_low")))} - {escape(str(item.get("ci_high")))}<br>'
-        f'<strong>Karakteristik tanah:</strong> {escape(str(lulc))}<br>'
-        f'<strong>Faktor dominan:</strong> {escape(factors)}'
+        f"<strong>CI:</strong> {escape(str(item.get('ci_low')))} - {escape(str(item.get('ci_high')))}<br>"
+        f"<strong>Karakteristik tanah:</strong> {escape(str(lulc))}<br>"
+        f"<strong>Faktor dominan:</strong> {escape(factors)}"
         f"{water_note}"
         "</div>"
         "</div>"
@@ -236,7 +261,9 @@ def render_risk_map(flood_results: list[dict]) -> None:
     )
     deck = pdk.Deck(
         map_style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-        initial_view_state=pdk.ViewState(latitude=center_lat, longitude=center_lon, zoom=9.5, pitch=0),
+        initial_view_state=pdk.ViewState(
+            latitude=center_lat, longitude=center_lon, zoom=9.5, pitch=0
+        ),
         layers=[layer],
         tooltip={
             "html": "<b>{name}</b><br/>FSI: {fsi_score}<br/>Risk: {category}",
@@ -267,9 +294,17 @@ def main() -> None:
         st.caption("API status")
         gee_status = gee_live_status(config_path)
         st.write(".env path:", str(ENV_PATH))
-        st.write("GROQ_API_KEY:", "tersedia" if os.getenv("GROQ_API_KEY") else "belum diset")
-        st.write("GEE local live:", "siap" if gee_status["ready_for_local_live"] else "belum siap")
-        st.write("GEE service key:", "tersedia" if gee_status["service_account_key_exists"] else "belum diset")
+        st.write(
+            "GROQ_API_KEY:", "tersedia" if os.getenv("GROQ_API_KEY") else "belum diset"
+        )
+        st.write(
+            "GEE local live:",
+            "siap" if gee_status["ready_for_local_live"] else "belum siap",
+        )
+        st.write(
+            "GEE service key:",
+            "tersedia" if gee_status["service_account_key_exists"] else "belum diset",
+        )
 
     if "query_text" not in st.session_state:
         st.session_state.query_text = EXAMPLES["Perbankan - collateral"]
@@ -288,18 +323,32 @@ def main() -> None:
     points_preview = extract_coordinates(query)
     with preview_col:
         if points_preview:
-            st.caption(f"Terdeteksi {len(points_preview)} koordinat: " + ", ".join(p["name"] for p in points_preview))
+            st.caption(
+                f"Terdeteksi {len(points_preview)} koordinat: "
+                + ", ".join(p["name"] for p in points_preview)
+            )
         else:
-            st.warning("Belum ada koordinat valid. Gunakan format `lat, lon`, contoh `-6.23, 107.01`.")
+            st.warning(
+                "Belum ada koordinat valid. Gunakan format `lat, lon`, contoh `-6.23, 107.01`."
+            )
     with action_col:
-        run = st.button("Run Analysis", type="primary", disabled=not bool(points_preview), use_container_width=True)
+        run = st.button(
+            "Run Analysis",
+            type="primary",
+            disabled=not bool(points_preview),
+            use_container_width=True,
+        )
     st.markdown("</div>", unsafe_allow_html=True)
 
     if run:
         if mode == "live" and not gee_live_status(config_path)["ready_for_local_live"]:
-            st.error("Mode live membutuhkan Earth Engine auth. Set EARTHENGINE_PROJECT dan jalankan earthengine authenticate, atau isi GEE_SERVICE_ACCOUNT_KEY.")
+            st.error(
+                "Mode live membutuhkan Earth Engine auth. Set EARTHENGINE_PROJECT dan jalankan earthengine authenticate, atau isi GEE_SERVICE_ACCOUNT_KEY."
+            )
             return
-        with st.spinner("Menghitung FSI, mengambil konteks RAG, dan menyusun rekomendasi..."):
+        with st.spinner(
+            "Menghitung FSI, mengambil konteks RAG, dan menyusun rekomendasi..."
+        ):
             try:
                 result = run_query_pipeline(
                     query=query,
@@ -349,10 +398,14 @@ def main() -> None:
     if result["rag_results"]:
         with st.expander("Lihat 5 Dokumen Regulasi & Referensi Ilmiah Terkait"):
             for idx, item in enumerate(result["rag_results"], start=1):
-                st.markdown(f"**S{idx}. {item['source']} p.{item['page']}** [{item['doc_type']}]")
+                st.markdown(
+                    f"**S{idx}. {item['source']} p.{item['page']}** [{item['doc_type']}]"
+                )
                 st.write(item["content"][:1200])
     else:
-        st.info("RAG tidak dijalankan karena seluruh titik terdeteksi sebagai badan air/NoData.")
+        st.info(
+            "RAG tidak dijalankan karena seluruh titik terdeteksi sebagai badan air/NoData."
+        )
 
     with st.expander("Raw JSON"):
         st.json(result)
